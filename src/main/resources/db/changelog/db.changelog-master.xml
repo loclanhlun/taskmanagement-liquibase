@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+    <changeSet author="LocHuynh" id="202306292300">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table user is already exists">
+            <not>
+                <tableExists tableName="user" />
+            </not>
+        </preConditions>
+        <createTable tableName="user">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="INT"/>
+            <column name="role_id" type="INT"/>
+            <column name="created_date" type="DATE" valueComputed="CURRENT_DATE"/>
+            <column name="updated_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+        <rollback>
+            <dropTable tableName="user" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306252158">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table roles is already exists">
+            <not>
+                <tableExists tableName="roles" />
+            </not>
+        </preConditions>
+        <createTable tableName="roles">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="DATE" valueComputed="CURRENT_DATE"/>
+            <column name="updated_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+        <rollback>
+            <dropTable tableName="roles" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306252200">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table permissions is already exists">
+            <not>
+                <tableExists tableName="permissions" />
+            </not>
+        </preConditions>
+        <createTable tableName="permissions">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="DATE" valueComputed="CURRENT_DATE"/>
+            <column name="updated_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+        <rollback>
+            <dropTable tableName="permissions" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306252201">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table status is already exists">
+            <not>
+                <tableExists tableName="status" />
+            </not>
+        </preConditions>
+        <createTable tableName="status">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="DATE" valueComputed="CURRENT_DATE"/>
+            <column name="updated_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+        <rollback>
+            <dropTable tableName="status" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306252203">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table tasks is already exists">
+            <not>
+                <tableExists tableName="tasks" />
+            </not>
+        </preConditions>
+        <createTable tableName="tasks">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="status" type="INT"/>
+            <column name="created_date" type="DATE" valueComputed="CURRENT_DATE"/>
+            <column name="updated_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="tasks" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306252210">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table task_status is already exists">
+            <not>
+                <tableExists tableName="task_status" />
+            </not>
+        </preConditions>
+        <createTable tableName="task_status">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="code" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="DATE" valueComputed="CURRENT_DATE"/>
+            <column name="updated_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="task_status" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306292254">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table user_data is already exists">
+            <not>
+                <tableExists tableName="user_data" />
+            </not>
+        </preConditions>
+        <createTable tableName="user_data">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="INT"/>
+            <column name="parent_user_id" type="INT"/>
+            <column name="permission_id" type="INT"/>
+            <column name="created_date" type="DATE" valueComputed="CURRENT_DATE"/>
+            <column name="updated_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="user_data" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306252237">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table user_task_data is already exists">
+            <not>
+                <tableExists tableName="user_task_data" />
+            </not>
+        </preConditions>
+        <createTable tableName="user_task_data">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="INT"/>
+            <column name="task_id" type="INT"/>
+            <column name="created_date" type="DATE" valueComputed="CURRENT_DATE"/>
+            <column name="updated_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="user_task_data" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306292201">
+        <preConditions onFail="MARK_RAN" onFailMessage="foreign key fk_user_role is already exists">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_user_role" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="user"
+                                 baseColumnNames="role_id"
+                                 constraintName="fk_user_role"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropTable tableName="fk_user_role" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306292302">
+        <preConditions onFail="MARK_RAN" onFailMessage="foreign key fk_user_status is already exists">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_user_status" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="user"
+                                 baseColumnNames="status_id"
+                                 constraintName="fk_user_status"
+                                 referencedTableName="status"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropTable tableName="fk_user_status" />
+        </rollback>
+    </changeSet>
+
+
+    <changeSet author="LocHuynh" id="202306252239">
+        <preConditions onFail="MARK_RAN" onFailMessage="foreign key fk_user_data_permission is already exists">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_user_data_permission" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="user_data"
+                                 baseColumnNames="permission_id"
+                                 constraintName="fk_user_data_permission"
+                                 referencedTableName="permissions"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropTable tableName="fk_user_data_permission" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306252240">
+        <preConditions onFail="MARK_RAN" onFailMessage="foreign key fk_user_task_data_user is already exists">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_user_task_data_user" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="user_task_data"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_task_data_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropTable tableName="fk_user_task_data_user" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306292051">
+        <preConditions onFail="MARK_RAN" onFailMessage="MANAGER or STAFF is already exists">
+            <or>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM roles WHERE code = 'MANAGER';
+                </sqlCheck>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM roles WHERE code = 'STAFF';
+                </sqlCheck>
+            </or>
+        </preConditions>
+        <sql>
+            INSERT INTO roles (id, code, name, created_date) VALUES (1, 'MANAGER', 'Manager', CURRENT_DATE);
+            INSERT INTO roles (id, code, name, created_date) VALUES (2, 'STAFF', 'Staff', CURRENT_DATE);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM roles WHERE id = 1 AND code = 'MANAGER';
+                DELETE FROM roles WHERE id = 2 AND code = 'STAFF';
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306292112">
+        <preConditions onFail="MARK_RAN" onFailMessage="Status ACTIVE or BLOCKED or INACTIVE is already exists">
+            <or>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM status WHERE code = 'ACTIVE';
+                </sqlCheck>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM status WHERE code = 'BLOCKED';
+                </sqlCheck>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM status WHERE code = 'INACTIVE';
+                </sqlCheck>
+            </or>
+        </preConditions>
+        <sql>
+            INSERT INTO status (id, code, name, created_date) VALUES (1, 'ACTIVE', 'Active', CURRENT_DATE);
+            INSERT INTO status (id, code, name, created_date) VALUES (2, 'BLOCKED', 'Blocked', CURRENT_DATE);
+            INSERT INTO status (id, code, name, created_date) VALUES (3, 'INACTIVE', 'Inactive', CURRENT_DATE);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM status WHERE id = 1 AND code = 'ACTIVE';
+                DELETE FROM status WHERE id = 2 AND code = 'BLOCKED';
+                DELETE FROM status WHERE id = 3 AND code = 'INACTIVE';
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202306292123">
+        <preConditions onFail="MARK_RAN" onFailMessage="Task status TODO or INPROGRESS or DONE is already exists">
+            <or>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM task_status WHERE code = 'TODO';
+                </sqlCheck>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM task_status WHERE code = 'INPROGRESS';
+                </sqlCheck>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM task_status WHERE code = 'DONE';
+                </sqlCheck>
+            </or>
+        </preConditions>
+        <sql>
+            INSERT INTO task_status (id, code, name, created_date) VALUES (1, 'TODO', 'Todo', CURRENT_DATE);
+            INSERT INTO task_status (id, code, name, created_date) VALUES (2, 'INPROGRESS', 'In-Progress', CURRENT_DATE);
+            INSERT INTO task_status (id, code, name, created_date) VALUES (3, 'DONE', 'Done', CURRENT_DATE);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM task_status WHERE id = 1 AND code = 'TODO';
+                DELETE FROM task_status WHERE id = 2 AND code = 'INPROGRESS';
+                DELETE FROM task_status WHERE id = 3 AND code = 'DONE';
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
