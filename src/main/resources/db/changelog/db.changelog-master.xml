@@ -290,25 +290,25 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
         </rollback>
     </changeSet>
 
-    <changeSet author="LocHuynh" id="202306292051">
+    <changeSet author="LocHuynh" id="202307011552">
         <preConditions onFail="MARK_RAN" onFailMessage="MANAGER or STAFF is already exists">
             <or>
                 <sqlCheck expectedResult="0">
-                    SELECT COUNT(*) FROM roles WHERE code = 'MANAGER';
+                    SELECT COUNT(*) FROM roles WHERE code = 'ROLE_MANAGER';
                 </sqlCheck>
                 <sqlCheck expectedResult="0">
-                    SELECT COUNT(*) FROM roles WHERE code = 'STAFF';
+                    SELECT COUNT(*) FROM roles WHERE code = 'ROLE_STAFF';
                 </sqlCheck>
             </or>
         </preConditions>
         <sql>
-            INSERT INTO roles (id, code, name, created_date) VALUES (1, 'MANAGER', 'Manager', CURRENT_DATE);
-            INSERT INTO roles (id, code, name, created_date) VALUES (2, 'STAFF', 'Staff', CURRENT_DATE);
+            INSERT INTO roles (id, code, name, created_date) VALUES (1, 'ROLE_MANAGER', 'Manager', CURRENT_DATE);
+            INSERT INTO roles (id, code, name, created_date) VALUES (2, 'ROLE_STAFF', 'Staff', CURRENT_DATE);
         </sql>
         <rollback>
             <sql>
-                DELETE FROM roles WHERE id = 1 AND code = 'MANAGER';
-                DELETE FROM roles WHERE id = 2 AND code = 'STAFF';
+                DELETE FROM roles WHERE id = 1 AND code = 'ROLE_MANAGER';
+                DELETE FROM roles WHERE id = 2 AND code = 'ROLE_STAFF';
             </sql>
         </rollback>
     </changeSet>
@@ -365,6 +365,93 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
                 DELETE FROM task_status WHERE id = 1 AND code = 'TODO';
                 DELETE FROM task_status WHERE id = 2 AND code = 'INPROGRESS';
                 DELETE FROM task_status WHERE id = 3 AND code = 'DONE';
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202307011525">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table role_permissions is already exists">
+            <not>
+                <tableExists tableName="role_permissions" />
+            </not>
+        </preConditions>
+        <createTable tableName="role_permissions">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="role_id" type="INT"/>
+            <column name="permission_id" type="INT"/>
+            <column name="created_date" type="DATE" valueComputed="CURRENT_DATE"/>
+            <column name="updated_date" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="role_permissions" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202307011527">
+        <preConditions onFail="MARK_RAN" onFailMessage="foreign key fk_role_permissions_role is already exists">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_role_permissions_role" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="role_permissions"
+                                 baseColumnNames="role_id"
+                                 constraintName="fk_role_permissions_role"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropTable tableName="fk_role_permissions_role" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202307011528">
+        <preConditions onFail="MARK_RAN" onFailMessage="foreign key fk_role_permissions_permission is already exists">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_role_permissions_permission" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="role_permissions"
+                                 baseColumnNames="permission_id"
+                                 constraintName="fk_role_permissions_permission"
+                                 referencedTableName="permissions"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropTable tableName="fk_role_permissions_permission" />
+        </rollback>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202307011531">
+        <preConditions onFail="MARK_RAN" onFailMessage="permission READ or CREATE or UPDATE or DELETE is already exists">
+            <or>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM permissions WHERE code = 'READ';
+                </sqlCheck>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM permissions WHERE code = 'CREATE';
+                </sqlCheck>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM permissions WHERE code = 'UPDATE';
+                </sqlCheck>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM permissions WHERE code = 'DELETE';
+                </sqlCheck>
+            </or>
+        </preConditions>
+        <sql>
+            INSERT INTO permissions (id, code, name, created_date) VALUES (1, 'READ', 'Read', CURRENT_DATE);
+            INSERT INTO permissions (id, code, name, created_date) VALUES (2, 'CREATE', 'Create', CURRENT_DATE);
+            INSERT INTO permissions (id, code, name, created_date) VALUES (3, 'UPDATE', 'Update', CURRENT_DATE);
+            INSERT INTO permissions (id, code, name, created_date) VALUES (4, 'DELETE', 'Delete', CURRENT_DATE);
+        </sql>
+        <rollback>
+            <sql>
+                DELETE FROM permissions WHERE id = 1 AND code = 'READ';
+                DELETE FROM permissions WHERE id = 2 AND code = 'CREATE';
+                DELETE FROM permissions WHERE id = 3 AND code = 'UPDATE';
+                DELETE FROM permissions WHERE id = 4 AND code = 'DELETE';
             </sql>
         </rollback>
     </changeSet>
