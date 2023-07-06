@@ -455,4 +455,22 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
             </sql>
         </rollback>
     </changeSet>
+
+    <changeSet author="LocHuynh" id="202307062123">
+        <preConditions onFail="MARK_RAN" onFailMessage="foreign key fk_user_data_permission is not exists">
+                <foreignKeyConstraintExists foreignKeyName="fk_user_data_permission"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="user_data"
+                                 constraintName="fk_user_data_permission" />
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202307062124">
+        <preConditions onFail="MARK_RAN" onFailMessage="Column permission_id in table user_data is not exists">
+            <columnExists tableName="user_data" columnName="permission_id"/>
+        </preConditions>
+        <dropColumn tableName="user_data"
+                    columnName="permission_id" />
+    </changeSet>
+
+
 </databaseChangeLog>
