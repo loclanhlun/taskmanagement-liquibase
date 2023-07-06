@@ -472,5 +472,30 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
                     columnName="permission_id" />
     </changeSet>
 
+    <changeSet author="LocHuynh" id="202307062155">
+        <preConditions onFail="MARK_RAN" onFailMessage="Column status is not exists">
+            <columnExists tableName="tasks" columnName="status" />
+        </preConditions>
+        <renameColumn tableName="tasks" oldColumnName="status" newColumnName="status_id" columnDataType="INT"/>
+    </changeSet>
+
+
+    <changeSet author="LocHuynh" id="202307062156">
+        <preConditions onFail="MARK_RAN" onFailMessage="foreign key fk_tasks_task_status is already exists">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_tasks_task_status" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="tasks"
+                                 baseColumnNames="status_id"
+                                 constraintName="fk_tasks_task_status"
+                                 referencedTableName="task_status"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropTable tableName="fk_tasks_task_status" />
+        </rollback>
+    </changeSet>
+
+
 
 </databaseChangeLog>
