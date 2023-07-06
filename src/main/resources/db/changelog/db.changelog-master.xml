@@ -496,6 +496,15 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
         </rollback>
     </changeSet>
 
-
+    <changeSet author="LocHuynh" id="202307062247">
+        <preConditions onFail="MARK_RAN" onFailMessage="Column parent_id is already exists">
+            <not>
+                <columnExists columnName="parent_id" tableName="tasks"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="tasks">
+            <column name="parent_id" type="INT"/>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>
