@@ -507,4 +507,27 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
         </addColumn>
     </changeSet>
 
+    <changeSet author="LocHuynh" id="202307112140">
+        <preConditions onFail="MARK_RAN" onFailMessage="Column report_to is already exists">
+            <not>
+                <columnExists columnName="report_to" tableName="tasks"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="tasks">
+            <column name="report_to" type="VARCHAR(150)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="LocHuynh" id="202307112143">
+        <preConditions onFail="MARK_RAN" onFailMessage="Column done_by is already exists">
+            <not>
+                <columnExists columnName="done_by" tableName="tasks"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="tasks">
+            <column name="done_by" type="VARCHAR(150)"/>
+        </addColumn>
+    </changeSet>
+
+
 </databaseChangeLog>
